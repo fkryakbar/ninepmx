@@ -1,59 +1,22 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
-
-type Theme = "dark" | "light";
-
-interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { useTheme as useNextTheme } from "next-themes";
+import React from "react";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
-
-  useEffect(() => {
-    // Reads theme state on mount to prevent server-client hydration mismatches
-    const saved = localStorage.getItem("portfolio-theme") as Theme;
-    const initialTheme = saved || "dark";
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setThemeState(initialTheme);
-    
-    if (initialTheme === "light") {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-    } else {
-      document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
-
-  const setTheme = (nextTheme: Theme) => {
-    setThemeState(nextTheme);
-    localStorage.setItem("portfolio-theme", nextTheme);
-    
-    if (nextTheme === "light") {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-    } else {
-      document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("dark");
-    }
-  };
-
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <NextThemesProvider 
+      attribute="class" 
+      defaultTheme="dark" 
+      enableSystem={false}
+      storageKey="portfolio-theme"
+    >
       {children}
-    </ThemeContext.Provider>
+    </NextThemesProvider>
   );
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error("useTheme must be used within ThemeProvider");
-  }
-  return context;
+  return useNextTheme();
 }

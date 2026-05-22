@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import AnimatedBackground from "../components/AnimatedBackground";
-import ThemeToggle from "../components/ThemeToggle";
+import Navbar from "../components/Navbar";
 
 export const metadata: Metadata = {
   title: "About | Ahmad Fikri Akbar - Civil Servant & Software Engineer",
@@ -15,30 +15,7 @@ export default function AboutPage() {
       {/* Immersive retro synthwave canvas background grid */}
       <AnimatedBackground />
 
-      {/* Main Header / Navigation */}
-      <header className="sticky top-0 z-40 w-full border-b border-card-border bg-background/60 backdrop-blur-md transition-colors duration-300">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 bg-cyber-orange animate-pulse rounded-full" />
-            <Link
-              href="/"
-              className="font-mono text-base font-bold tracking-wider text-foreground hover:text-cyber-orange transition duration-200"
-            >{"//FKRYAKBAR"}</Link>
-          </div>
-
-          <nav className="hidden md:flex items-center gap-8 font-mono text-xs font-semibold tracking-widest text-foreground/80">
-            <Link href="/" className="hover:text-cyber-cyan transition">{"//HOME"}</Link>
-            <Link href="/about" className="text-cyber-orange font-bold tracking-wider">{"//ABOUT"}</Link>
-            <Link href="/#projects" className="hover:text-cyber-pink transition">{"//PROJECTS"}</Link>
-            <Link href="/#skills" className="hover:text-cyber-green transition">{"//SKILLS"}</Link>
-            <Link href="/#contact" className="hover:text-cyber-amber transition">{"//CONTACT"}</Link>
-          </nav>
-
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Main Container */}
       <main className="mx-auto flex max-w-7xl flex-col px-6 py-12 md:py-20 lg:py-24 space-y-16">
