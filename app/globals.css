@@ -1,26 +1,368 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Default Theme: Dark Mode (Retro Cyberpunk) */
+  --background: #06060c;
+  --foreground: #f0f0f6;
+  --card: rgba(12, 12, 24, 0.55);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --cyber-cyan: #00f0ff;
+  --cyber-pink: #ff007f;
+  --cyber-orange: #ff5500;
+  --cyber-green: #39ff14;
+  --cyber-amber: #ffb703;
+  --crt-line: rgba(255, 255, 255, 0.02);
+  --grid-line: rgba(0, 240, 255, 0.04);
+  
+  /* Dedicated Terminal variables for contrast matching */
+  --terminal-bg: rgba(6, 6, 12, 0.75);
+  --terminal-header: rgba(12, 12, 24, 0.5);
+  --terminal-presets: rgba(12, 12, 24, 0.3);
+  --terminal-input: rgba(12, 12, 24, 0.5);
+  --terminal-border: rgba(255, 255, 255, 0.08);
+  --terminal-text: rgba(240, 240, 246, 0.95);
+}
+
+/* Light Theme: Cyber Retro Warm Cream */
+:root.light {
+  --background: #f7f5ed;
+  --foreground: #181824;
+  --card: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(24, 24, 36, 0.12);
+  --cyber-cyan: #007788;
+  --cyber-pink: #d00060;
+  --cyber-orange: #c2410c;
+  --cyber-green: #1a6f2e;
+  --cyber-amber: #d97706;
+  --crt-line: rgba(0, 0, 0, 0.015);
+  --grid-line: rgba(0, 119, 136, 0.035);
+  
+  /* Light theme terminal: High contrast e-ink/paper console style */
+  --terminal-bg: #FAF9F5;
+  --terminal-header: #EBE8DC;
+  --terminal-presets: #F3F1E7;
+  --terminal-input: #EBE8DC;
+  --terminal-border: rgba(24, 24, 36, 0.12);
+  --terminal-text: #181824;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  --color-cyber-cyan: var(--cyber-cyan);
+  --color-cyber-pink: var(--cyber-pink);
+  --color-cyber-orange: var(--cyber-orange);
+  --color-cyber-green: var(--cyber-green);
+  --color-cyber-amber: var(--cyber-amber);
+  
+  --color-terminal-bg: var(--terminal-bg);
+  --color-terminal-header: var(--terminal-header);
+  --color-terminal-presets: var(--terminal-presets);
+  --color-terminal-input: var(--terminal-input);
+  --color-terminal-border: var(--terminal-border);
+  --color-terminal-text: var(--terminal-text);
+  
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background-color: var(--background);
+  transition: background-color 0.4s ease;
 }
 
 body {
-  background: var(--background);
+  background-color: transparent;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui;
+  overflow-x: hidden;
+  transition: color 0.4s ease;
 }
+
+/* Glassmorphism optimized for performance */
+.glass-panel {
+  background-color: var(--card);
+  border: 1px solid var(--card-border);
+  transform: translateZ(0); /* Hardware Acceleration */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: transform;
+}
+
+@media (min-width: 768px) {
+  .glass-panel {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* Neon Retro Glow Borders */
+.glow-cyan:hover {
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+  border-color: var(--cyber-cyan);
+}
+
+.glow-pink:hover {
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+  border-color: var(--cyber-pink);
+}
+
+.glow-green:hover {
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+  border-color: var(--cyber-green);
+}
+
+.glow-orange:hover {
+  box-shadow: 0 0 15px rgba(255, 85, 0, 0.3);
+  border-color: var(--cyber-orange);
+}
+
+/* Retro grid scanlines */
+.scanlines::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(var(--crt-line) 50%, rgba(0, 0, 0, 0) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.005), rgba(0, 0, 255, 0.01));
+  background-size: 100% 4px, 6px 100%;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Cyber grid design background (static under the canvas) */
+.cyber-grid-static {
+  background-image: 
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Typewriter animation helper */
+.typewriter-cursor::after {
+  content: "|";
+  animation: blink 0.8s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to { opacity: 0; }
+}
+
+/* ========================================
+   Tiptap Editor Styles
+   ======================================== */
+
+/* Editor content area */
+.tiptap-editor-content {
+  min-height: 300px;
+  padding: 1.25rem;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui;
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--foreground);
+  outline: none;
+}
+
+.tiptap-editor-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--foreground);
+  opacity: 0.25;
+  pointer-events: none;
+  height: 0;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.8125rem;
+}
+
+.tiptap-editor-content h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.tiptap-editor-content h2 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin: 1.25rem 0 0.625rem;
+}
+
+.tiptap-editor-content h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+}
+
+.tiptap-editor-content p {
+  margin: 0.625rem 0;
+}
+
+.tiptap-editor-content ul,
+.tiptap-editor-content ol {
+  padding-left: 1.5rem;
+  margin: 0.625rem 0;
+}
+
+.tiptap-editor-content ul {
+  list-style: disc;
+}
+
+.tiptap-editor-content ol {
+  list-style: decimal;
+}
+
+.tiptap-editor-content li {
+  margin: 0.25rem 0;
+}
+
+.tiptap-editor-content blockquote {
+  border-left: 3px solid var(--cyber-cyan);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--foreground);
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.tiptap-editor-content .tiptap-code-block {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--card-border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.tiptap-editor-content code {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 0.25rem;
+  padding: 0.15rem 0.4rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.85em;
+}
+
+.tiptap-editor-content .tiptap-link {
+  color: var(--cyber-cyan);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.tiptap-editor-content .tiptap-link:hover {
+  opacity: 0.8;
+}
+
+.tiptap-editor-content .tiptap-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  border: 1px solid var(--card-border);
+}
+
+/* ========================================
+   Public Content Rendering (project detail)
+   ======================================== */
+.tiptap-content {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--foreground);
+  opacity: 0.9;
+}
+
+.tiptap-content h1 {
+  font-size: 1.875rem;
+  font-weight: 800;
+  margin: 2rem 0 1rem;
+  letter-spacing: -0.02em;
+}
+
+.tiptap-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1.75rem 0 0.75rem;
+}
+
+.tiptap-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.tiptap-content p {
+  margin: 0.875rem 0;
+}
+
+.tiptap-content ul,
+.tiptap-content ol {
+  padding-left: 1.75rem;
+  margin: 0.875rem 0;
+}
+
+.tiptap-content ul {
+  list-style: disc;
+}
+
+.tiptap-content ol {
+  list-style: decimal;
+}
+
+.tiptap-content li {
+  margin: 0.375rem 0;
+}
+
+.tiptap-content blockquote {
+  border-left: 3px solid var(--cyber-cyan);
+  padding-left: 1.25rem;
+  margin: 1.25rem 0;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.tiptap-content pre {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--card-border);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin: 1.25rem 0;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.tiptap-content code {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 0.25rem;
+  padding: 0.15rem 0.4rem;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.85em;
+}
+
+.tiptap-content a {
+  color: var(--cyber-cyan);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+}
+
+.tiptap-content a:hover {
+  opacity: 0.8;
+}
+
+.tiptap-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1.25rem 0;
+  border: 1px solid var(--card-border);
+}
+
+.tiptap-content hr {
+  border: none;
+  border-top: 1px solid var(--card-border);
+  margin: 2rem 0;
+}
+

@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProjectType {
+  open_source
+  close_source
+}
+
+model Project {
+  id          String      @id @default(cuid())
+
+  projectName String
+  slug        String      @unique
+
+  thumbnail   String
+
+  content     String      @db.Text
+
+  type        ProjectType
+
+  link        String?
+  githubLink  String?
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("projects")
+}

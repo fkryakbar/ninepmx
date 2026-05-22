@@ -1,65 +1,205 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import Link from "next/link";
+import AnimatedBackground from "./components/AnimatedBackground";
+import ContactForm from "./components/ContactForm";
+import InteractiveTerminal from "./components/InteractiveTerminal";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import TypewriterTagline from "./components/TypewriterTagline";
+import { getLatestProjects } from "@/repositories/project";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "fkryakbar | A Developer Obsessed With Performance.",
+  description:
+    "I build scalable applications, backend systems, and automation tools while continuously exploring better ways to create reliable and efficient software.",
+};
+
+
+
+export default async function Home() {
+  // Fetch latest projects from database
+  const dbProjects = await getLatestProjects(3);
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <>
+      {/* High performance moving grid canvas backdrop */}
+      <AnimatedBackground />
+
+      {/* Main Header / Navigation */}
+      <Navbar />
+
+      {/* Main Container */}
+      <main className="mx-auto flex max-w-7xl flex-col px-6 py-12 md:py-20 lg:py-24 space-y-24 md:space-y-36">
+
+        {/* Section 1: Hero */}
+        <section id="hero" className="flex flex-col gap-8 md:gap-12 pt-8">
+          <div className="flex max-w-4xl flex-col gap-6">
+            <div className="inline-flex w-fit items-center gap-2 rounded border border-cyber-cyan/20 bg-cyber-cyan/5 px-3 py-1 font-mono text-xs font-bold text-cyber-cyan tracking-widest uppercase">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyber-cyan opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyber-cyan" />
+              </span>
+              system_status: operational
+            </div>
+
+            {/* Core Typewriter Tagline */}
+            <TypewriterTagline />
+
+            <p className="max-w-2xl text-base md:text-lg leading-relaxed text-foreground/75 font-sans">
+              I enjoy building scalable applications, experimenting with new technologies, and creating open-source projects that solve real problems and help other developers learn and build faster.
+            </p>
+          </div>
+
+          {/* Action CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 font-mono text-xs font-bold tracking-widest">
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="#projects"
+              className="flex h-12 items-center justify-center rounded-md bg-foreground px-6 text-background transition-transform duration-200 hover:-translate-y-1 active:translate-y-0"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
+              [LAUNCH_SHOWCASE]
+            </a>
             <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="#contact"
+              className="flex h-12 items-center justify-center rounded-md border border-card-border bg-card px-6 text-foreground hover:border-cyber-cyan hover:shadow-[0_0_15px_rgba(0,240,255,0.25)] transition-all duration-300"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              [ESTABLISH_CONN]
+            </a>
+          </div>
+        </section>
+
+        {/* Bento Stats Banner */}
+        <section className="grid grid-cols-2 gap-4 md:grid-cols-4 font-mono">
+          {[
+            { label: "SHIPPED_APPLICATIONS", val: "45+", desc: "Node & React setups" },
+            { label: "SYSTEMS_PERFORMANCE", val: "100%", desc: "Mobile Optimized" },
+            { label: "LINES_OF_TYPED_CODE", val: "150K", desc: "Pure TypeScript" },
+            { label: "RUNTIME_UPTIME_RATE", val: "99.9%", desc: "Continuous Deploys" },
+          ].map((stat, idx) => (
+            <div
+              key={idx}
+              className="glass-panel flex flex-col gap-2 rounded-lg p-5 border border-card-border"
+            >
+              <span className="text-[10px] tracking-wider text-foreground/50">{stat.label}</span>
+              <span className="text-3xl font-extrabold text-cyber-cyan">{stat.val}</span>
+              <span className="text-[10px] text-foreground/60 leading-tight">{stat.desc}</span>
+            </div>
+          ))}
+        </section>
+
+        {/* Section 2: Projects Showcase (Server-Side Rendered for SEO) */}
+        <section id="projects" className="space-y-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-card-border pb-6">
+            <div>
+              <span className="font-mono text-xs font-bold text-cyber-pink tracking-widest uppercase">
+                // 01. SOURCE_CODE_METADATA
+              </span>
+              <h3 className="mt-2 text-2xl md:text-3xl font-extrabold tracking-tight">
+                Featured System Operations
+              </h3>
+            </div>
+            <Link
+              href="/projects"
+              className="font-mono text-xs text-foreground/50 hover:text-cyber-cyan transition"
+            >
+              VIEW_ALL →
+            </Link>
+          </div>
+
+          {dbProjects.length > 0 ? (
+            <div className="grid gap-6 md:grid-cols-3">
+              {dbProjects.map((proj, idx) => {
+                const glowClasses = ["glow-cyan", "glow-pink", "glow-green"];
+                return (
+                  <Link
+                    key={proj.id}
+                    href={`/projects/${proj.slug}`}
+                    className={`glass-panel group relative flex flex-col justify-between overflow-hidden rounded-xl ${glowClasses[idx % 3]}`}
+                  >
+                    {proj.thumbnail && (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={proj.thumbnail}
+                        alt={proj.projectName}
+                        className="h-44 w-full object-cover border-b border-card-border/60"
+                      />
+                    )}
+                    <div className="p-5 space-y-3">
+                      <div className="flex items-center justify-between font-mono text-[10px]">
+                        <span
+                          className={`rounded-full px-2.5 py-0.5 font-bold tracking-wider ${proj.type === "open_source"
+                            ? "bg-cyber-green/10 text-cyber-green border border-cyber-green/20"
+                            : "bg-cyber-pink/10 text-cyber-pink border border-cyber-pink/20"
+                            }`}
+                        >
+                          {proj.type === "open_source" ? "OPEN_SRC" : "CLOSED_SRC"}
+                        </span>
+                        <span className="text-foreground/40">
+                          {new Date(proj.createdAt).toLocaleDateString("en-US", {
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      <h4 className="text-lg font-bold group-hover:text-cyber-cyan transition duration-300">
+                        {proj.projectName}
+                      </h4>
+                      <div className="pt-2 border-t border-card-border/60">
+                        <span className="font-mono text-[10px] text-foreground/40 group-hover:text-cyber-cyan/60 transition">
+                          VIEW_PROJECT →
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12 border border-dashed border-card-border rounded-xl bg-card/20">
+              <p className="font-mono text-sm text-foreground/40">
+                // SYSTEM_OFFLINE: No projects currently found in database.
+              </p>
+            </div>
+          )}
+        </section>
+
+        {/* Section 3: Interactive Skills Terminal */}
+        <section id="skills" className="grid gap-12 lg:grid-cols-5 items-center">
+          <div className="lg:col-span-2 space-y-6">
+            <span className="font-mono text-xs font-bold text-cyber-green tracking-widest uppercase">
+              // MY CORE TECHNOLOGY STACK
+            </span>
+            <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight font-sans">
+              My Core Technology Stack
+            </h3>
+            <p className="text-sm leading-relaxed text-foreground/75 font-sans">
+              I enjoy learning and working with a variety of modern, robust technologies. My stack centers around Next.js, React, Go, TypeScript, Tailwind, Laravel, Node.js, and Docker tools that help me build stable, performant applications while continually growing as an engineer.
+            </p>
+            <div className="rounded-lg border border-card-border bg-card/40 p-4 font-mono text-[10px] text-foreground/60 space-y-1">
+              <div>$ systeminfo | grep active_stack</div>
+              <div>- FRONTEND : Next.js, React, TypeScript, Tailwind</div>
+              <div>- BACKEND  : Go, Laravel, Node.js</div>
+              <div>- DEPLOY   : Docker (SECURED)</div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-3">
+            <InteractiveTerminal />
+          </div>
+        </section>
+
+        {/* Section 4: Contact / Establishment */}
+        <section id="contact" className="mx-auto w-full max-w-2xl space-y-6">
+          <div className="text-center">
+            <span className="font-mono text-xs font-bold text-cyber-orange tracking-widest uppercase">
+              // 03. UPLINK_TUNNEL
+            </span>
+          </div>
+
+          <ContactForm />
+        </section>
       </main>
-    </div>
+
+      {/* Footer */}
+      <Footer />
+    </>
   );
 }
