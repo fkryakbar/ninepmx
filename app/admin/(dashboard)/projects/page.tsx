@@ -84,7 +84,7 @@ export default async function AdminProjectsPage({
                 </tr>
               </thead>
               <tbody>
-                {projects.map((project) => (
+                {projects.map((project: any) => (
                   <tr
                     key={project.id}
                     className="border-b border-card-border/30 hover:bg-foreground/[0.02] transition"
