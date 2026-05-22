@@ -106,7 +106,7 @@ export default async function AdminDashboardPage() {
                 </tr>
               </thead>
               <tbody>
-                {latestProjects.map((project) => (
+                {latestProjects.map((project: any) => (
                   <tr
                     key={project.id}
                     className="border-b border-card-border/30 hover:bg-foreground/[0.02] transition"
