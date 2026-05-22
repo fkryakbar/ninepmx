@@ -29,9 +29,7 @@ export default async function PublicProjectsPage({
       <main className="mx-auto max-w-7xl px-6 py-12 md:py-20 space-y-12">
         {/* Header */}
         <div className="space-y-4">
-          <span className="font-mono text-xs font-bold text-cyber-pink tracking-widest uppercase">
-            // ALL_PROJECTS
-          </span>
+          <span className="font-mono text-xs font-bold text-cyber-pink tracking-widest uppercase">{"// ALL_PROJECTS"}</span>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
             Project Showcase
           </h1>

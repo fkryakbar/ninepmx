@@ -89,9 +89,7 @@ export default async function Home() {
         <section id="projects" className="space-y-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-card-border pb-6">
             <div>
-              <span className="font-mono text-xs font-bold text-cyber-pink tracking-widest uppercase">
-                // 01. SOURCE_CODE_METADATA
-              </span>
+              <span className="font-mono text-xs font-bold text-cyber-pink tracking-widest uppercase">{"// 01. SOURCE_CODE_METADATA"}</span>
               <h3 className="mt-2 text-2xl md:text-3xl font-extrabold tracking-tight">
                 Featured System Operations
               </h3>
@@ -154,9 +152,7 @@ export default async function Home() {
             </div>
           ) : (
             <div className="text-center py-12 border border-dashed border-card-border rounded-xl bg-card/20">
-              <p className="font-mono text-sm text-foreground/40">
-                // SYSTEM_OFFLINE: No projects currently found in database.
-              </p>
+              <p className="font-mono text-sm text-foreground/40">{"// SYSTEM_OFFLINE: No projects currently found in database."}</p>
             </div>
           )}
         </section>
@@ -164,9 +160,7 @@ export default async function Home() {
         {/* Section 3: Interactive Skills Terminal */}
         <section id="skills" className="grid gap-12 lg:grid-cols-5 items-center">
           <div className="lg:col-span-2 space-y-6">
-            <span className="font-mono text-xs font-bold text-cyber-green tracking-widest uppercase">
-              // MY CORE TECHNOLOGY STACK
-            </span>
+            <span className="font-mono text-xs font-bold text-cyber-green tracking-widest uppercase">{"// MY CORE TECHNOLOGY STACK"}</span>
             <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight font-sans">
               My Core Technology Stack
             </h3>
@@ -189,9 +183,7 @@ export default async function Home() {
         {/* Section 4: Contact / Establishment */}
         <section id="contact" className="mx-auto w-full max-w-2xl space-y-6">
           <div className="text-center">
-            <span className="font-mono text-xs font-bold text-cyber-orange tracking-widest uppercase">
-              // 03. UPLINK_TUNNEL
-            </span>
+            <span className="font-mono text-xs font-bold text-cyber-orange tracking-widest uppercase">{"// 03. UPLINK_TUNNEL"}</span>
           </div>
 
           <ContactForm />

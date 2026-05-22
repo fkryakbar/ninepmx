@@ -29,9 +29,7 @@ export default async function AdminProjectsPage({
           <h1 className="text-2xl font-extrabold tracking-tight font-mono">
             PROJECTS
           </h1>
-          <p className="text-sm text-foreground/60 font-mono">
-            // manage your project showcase [{meta.total} total]
-          </p>
+          <p className="text-sm text-foreground/60 font-mono">{"// manage your project showcase [{meta.total} total]"}</p>
         </div>
 
         <Link

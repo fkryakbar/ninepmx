@@ -38,9 +38,7 @@ export function AdminSidebar({ username }: AdminSidebarProps) {
         <Link
           href="/admin"
           className="font-mono text-sm font-bold tracking-widest text-foreground"
-        >
-          //CMS_PANEL
-        </Link>
+        >{"//CMS_PANEL"}</Link>
       </div>
 
       {/* Navigation */}

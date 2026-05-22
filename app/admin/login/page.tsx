@@ -18,15 +18,11 @@ export default function AdminLoginPage() {
             href="/"
             className="inline-flex items-center gap-2 font-mono text-sm text-foreground/60 hover:text-cyber-cyan transition"
           >
-            <span className="h-2 w-2 rounded-full bg-cyber-cyan animate-pulse" />
-            //FKRYAKBAR
-          </Link>
+            <span className="h-2 w-2 rounded-full bg-cyber-cyan animate-pulse" />{"//FKRYAKBAR"}</Link>
           <h1 className="text-2xl font-extrabold tracking-tight font-mono">
             ADMIN_LOGIN
           </h1>
-          <p className="text-sm text-foreground/60 font-mono">
-            // authenticate to access control panel
-          </p>
+          <p className="text-sm text-foreground/60 font-mono">{"// authenticate to access control panel"}</p>
         </div>
 
         {/* Login Card */}

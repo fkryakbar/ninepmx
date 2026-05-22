@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 
+const words = ["Ship.", "Build.", "Optimize."];
 export default function TypewriterTagline() {
-  const words = ["Ship.", "Build.", "Optimize."];
   const [wordIndex, setWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(100);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    
 
     const handleType = () => {
       const fullWord = words[wordIndex];
@@ -40,7 +40,7 @@ export default function TypewriterTagline() {
       }
     };
 
-    timer = setTimeout(handleType, typingSpeed);
+    const timer = setTimeout(handleType, typingSpeed);
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, typingSpeed, wordIndex]);
 

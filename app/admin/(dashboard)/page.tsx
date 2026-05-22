@@ -19,9 +19,7 @@ export default async function AdminDashboardPage() {
         <h1 className="text-2xl font-extrabold tracking-tight font-mono">
           DASHBOARD
         </h1>
-        <p className="text-sm text-foreground/60 font-mono">
-          // system overview and quick actions
-        </p>
+        <p className="text-sm text-foreground/60 font-mono">{"// system overview and quick actions"}</p>
       </div>
 
       {/* Stats Cards */}

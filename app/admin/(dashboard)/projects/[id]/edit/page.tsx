@@ -32,9 +32,7 @@ export default async function EditProjectPage({
         <h1 className="text-2xl font-extrabold tracking-tight font-mono">
           EDIT_PROJECT
         </h1>
-        <p className="text-sm text-foreground/60 font-mono">
-          // modifying: {project.projectName}
-        </p>
+        <p className="text-sm text-foreground/60 font-mono">{"// modifying: {project.projectName}"}</p>
       </div>
 
       {/* Form */}

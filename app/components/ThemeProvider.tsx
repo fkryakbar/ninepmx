@@ -18,6 +18,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Reads theme state on mount to prevent server-client hydration mismatches
     const saved = localStorage.getItem("portfolio-theme") as Theme;
     const initialTheme = saved || "dark";
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setThemeState(initialTheme);
     
     if (initialTheme === "light") {

@@ -14,9 +14,7 @@ export default function CreateProjectPage() {
         <h1 className="text-2xl font-extrabold tracking-tight font-mono">
           CREATE_PROJECT
         </h1>
-        <p className="text-sm text-foreground/60 font-mono">
-          // add a new project to your showcase
-        </p>
+        <p className="text-sm text-foreground/60 font-mono">{"// add a new project to your showcase"}</p>
       </div>
 
       {/* Form */}

@@ -23,17 +23,15 @@ export default function AboutPage() {
             <Link
               href="/"
               className="font-mono text-base font-bold tracking-wider text-foreground hover:text-cyber-orange transition duration-200"
-            >
-              //FKRYAKBAR
-            </Link>
+            >{"//FKRYAKBAR"}</Link>
           </div>
 
           <nav className="hidden md:flex items-center gap-8 font-mono text-xs font-semibold tracking-widest text-foreground/80">
-            <Link href="/" className="hover:text-cyber-cyan transition">//HOME</Link>
-            <Link href="/about" className="text-cyber-orange font-bold tracking-wider">//ABOUT</Link>
-            <Link href="/#projects" className="hover:text-cyber-pink transition">//PROJECTS</Link>
-            <Link href="/#skills" className="hover:text-cyber-green transition">//SKILLS</Link>
-            <Link href="/#contact" className="hover:text-cyber-amber transition">//CONTACT</Link>
+            <Link href="/" className="hover:text-cyber-cyan transition">{"//HOME"}</Link>
+            <Link href="/about" className="text-cyber-orange font-bold tracking-wider">{"//ABOUT"}</Link>
+            <Link href="/#projects" className="hover:text-cyber-pink transition">{"//PROJECTS"}</Link>
+            <Link href="/#skills" className="hover:text-cyber-green transition">{"//SKILLS"}</Link>
+            <Link href="/#contact" className="hover:text-cyber-amber transition">{"//CONTACT"}</Link>
           </nav>
 
           <div className="flex items-center gap-4">
@@ -123,9 +121,7 @@ export default function AboutPage() {
           {/* Right Column: Detailed Narrative Biography */}
           <div className="lg:col-span-8 space-y-8">
             <div className="space-y-4">
-              <span className="font-mono text-xs font-bold text-cyber-orange tracking-widest uppercase">
-                // 02. PROFILE_NARRATIVE
-              </span>
+              <span className="font-mono text-xs font-bold text-cyber-orange tracking-widest uppercase">{"// 02. PROFILE_NARRATIVE"}</span>
               <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight font-sans">
                 About Ahmad Fikri Akbar
               </h2>

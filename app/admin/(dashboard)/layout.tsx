@@ -1,6 +1,6 @@
 import { verifySession } from "@/lib/auth";
 import { logout } from "@/actions/auth";
-import Link from "next/link";
+
 import { AdminSidebar } from "@/app/components/admin/Sidebar";
 
 export default async function AdminLayout({
