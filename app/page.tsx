@@ -180,7 +180,118 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Section 4: Contact / Establishment */}
+        {/* Section 4: Partner In Crime */}
+        <section id="partners" className="space-y-12">
+          <div className="border-b border-card-border pb-6">
+            <span className="font-mono text-xs font-bold text-cyber-amber tracking-widest uppercase">{"// 02. ALLIED_NEURAL_NETWORKS"}</span>
+            <h3 className="mt-2 text-2xl md:text-3xl font-extrabold tracking-tight">
+              Partner In Crime
+            </h3>
+            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-foreground/75 font-sans">
+              Yes, I build with AI agents, the most elite fleet of digital co-pilots on the planet.
+              But don&apos;t get it twisted: every single line they generate passes through <span className="text-cyber-cyan font-semibold">my{" "}</span>review.
+              I read it, I understand it, I refactor it if it&apos;s ugly. These agents accelerate my workflow;
+              they don&apos;t replace my brain. A professional developer who blindly ships AI-generated code
+              isn&apos;t a developer, they&apos;re a copy-paste operator. I am <span className="text-cyber-pink font-semibold">not</span> that.
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-5">
+            {[
+              {
+                name: "Claude",
+                logo: "/ai/claude.webp",
+                models: ["claude-opus-4-6", "claude-sonnet-4-6"],
+                glow: "glow-cyan",
+                accent: "text-cyber-cyan",
+                border: "border-cyber-cyan/20",
+              },
+              {
+                name: "ChatGPT",
+                logo: "/ai/openai.webp",
+                models: ["gpt-5.3-codex"],
+                glow: "glow-green",
+                accent: "text-cyber-green",
+                border: "border-cyber-green/20",
+                contrast: true,
+              },
+              {
+                name: "Gemini",
+                logo: "/ai/gemini.webp",
+                models: ["gemini-3.1-pro", "gemini-3.1-flash"],
+                glow: "glow-cyan",
+                accent: "text-cyber-cyan",
+                border: "border-cyber-cyan/20",
+              },
+              {
+                name: "DeepSeek",
+                logo: "/ai/deepseek.webp",
+                models: ["deepseek-v4-pro", "deepseek-v4-flash"],
+                glow: "glow-pink",
+                accent: "text-cyber-pink",
+                border: "border-cyber-pink/20",
+              },
+              {
+                name: "MiniMax",
+                logo: "/ai/minimax.webp",
+                models: ["MiniMax-M2.7-highspeed"],
+                glow: "glow-orange",
+                accent: "text-cyber-orange",
+                border: "border-cyber-orange/20",
+              },
+              {
+                name: "GLM",
+                logo: "/ai/zai.webp",
+                models: ["glm-5-turbo", "glm-5.1"],
+                glow: "glow-green",
+                accent: "text-cyber-green",
+                border: "border-cyber-green/20",
+                contrast: true,
+              },
+              {
+                name: "Kimi",
+                logo: "/ai/kimi.webp",
+                models: ["kimi-k2.6"],
+                glow: "glow-pink",
+                accent: "text-cyber-pink",
+                border: "border-cyber-pink/20",
+              },
+            ].map((agent) => (
+              <div
+                key={agent.name}
+                className={`glass-panel group relative flex w-full sm:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)] flex-col items-center gap-4 rounded-xl p-6 ${agent.glow}`}
+              >
+                {/* Logo with light background for dark logos */}
+                <div className="relative flex h-16 w-16 items-center justify-center rounded-xl p-2 border border-card-border transition-transform duration-300 group-hover:scale-110 ai-logo-container">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={agent.logo}
+                    alt={agent.name}
+                    className={`h-full w-full object-contain ${agent.contrast ? "ai-logo-contrast" : ""}`}
+                  />
+                </div>
+
+                {/* Agent name */}
+                <h4 className={`font-mono text-sm font-bold tracking-wider ${agent.accent} transition-colors`}>
+                  {agent.name.toUpperCase()}
+                </h4>
+
+                {/* Model tags */}
+                <div className="flex flex-wrap justify-center gap-1.5">
+                  {agent.models.map((model) => (
+                    <span
+                      key={model}
+                      className={`rounded-full border ${agent.border} bg-card/60 px-2 py-0.5 font-mono text-[9px] tracking-wider text-foreground/50`}
+                    >
+                      {model}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Section 5: Contact / Establishment */}
         <section id="contact" className="mx-auto w-full max-w-2xl space-y-6">
           <div className="text-center">
             <span className="font-mono text-xs font-bold text-cyber-orange tracking-widest uppercase">{"// 03. UPLINK_TUNNEL"}</span>

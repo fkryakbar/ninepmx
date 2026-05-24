@@ -366,3 +366,27 @@ body {
   margin: 2rem 0;
 }
 
+/* ========================================
+   AI Partner Logos
+   ======================================== */
+
+/* Default: logos shown as-is, no filter */
+.ai-logo-container {
+  background-color: rgba(255, 255, 255, 0.08);
+  transition: background-color 0.4s ease;
+}
+
+:root.light .ai-logo-container {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Contrast variant (ChatGPT, GLM only): forced white in dark, forced black in light */
+.ai-logo-contrast {
+  filter: brightness(0) invert(1);
+  transition: filter 0.4s ease;
+}
+
+:root.light .ai-logo-contrast {
+  filter: brightness(0);
+}
+
