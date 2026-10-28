@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useMotion } from "./MotionProvider";
 
 export default function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { animationsEnabled } = useMotion();
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !animationsEnabled) return;
 
     const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
@@ -169,12 +171,13 @@ export default function AnimatedBackground() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [animationsEnabled]);
 
   return (
     <canvas
+      aria-hidden="true"
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 -z-10 h-full w-full"
+      className={`pointer-events-none fixed inset-0 -z-10 h-full w-full ${animationsEnabled ? "" : "hidden"}`}
     />
   );
 }

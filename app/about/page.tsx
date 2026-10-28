@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import AnimatedBackground from "../components/AnimatedBackground";
 import Navbar from "../components/Navbar";
+import ContactForm from "../components/ContactForm";
+import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "About | Ahmad Fikri Akbar - Civil Servant & Software Engineer",
@@ -18,93 +20,21 @@ export default function AboutPage() {
       <Navbar />
 
       {/* Main Container */}
-      <main className="mx-auto flex max-w-7xl flex-col px-6 py-12 md:py-20 lg:py-24 space-y-16">
+      <main id="main-content" tabIndex={-1} className="mx-auto flex w-full min-w-0 max-w-7xl flex-col px-6 py-12 md:py-20 lg:py-24 space-y-16">
+
+        <div className="space-y-4">
+          <span className="font-mono text-xs font-bold text-cyber-orange tracking-widest uppercase">{"// 02. PROFILE_NARRATIVE"}</span>
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight font-sans">
+            About Ahmad Fikri Akbar
+          </h1>
+          <div className="h-[2px] w-24 bg-gradient-to-r from-cyber-orange to-transparent" />
+        </div>
 
         {/* Main Section Grid */}
         <section className="grid gap-8 lg:grid-cols-12 items-start">
 
-          {/* Left Column: Key Stats / Retro Inspection Card */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="glass-panel rounded-xl border border-card-border overflow-hidden glow-orange relative">
-              {/* Scanlines / CRT Top Bar */}
-              <div className="bg-black/40 px-4 py-3 border-b border-card-border flex items-center justify-between font-mono text-[10px]">
-                <span className="font-bold text-cyber-orange">INSPECT_NODE: BIO_METADATA</span>
-                <span className="text-foreground/40">ONLINE</span>
-              </div>
-
-              {/* Profile Telemetry Elements */}
-              <div className="p-6 space-y-6 font-mono text-xs">
-                <div className="flex flex-col gap-2 pb-4 border-b border-card-border/50">
-                  <span className="text-[10px] text-foreground/40 tracking-wider">FULL_NAME</span>
-                  <span className="text-base font-bold text-foreground">Ahmad Fikri Akbar</span>
-                </div>
-
-                <div className="flex flex-col gap-2 pb-4 border-b border-card-border/50">
-                  <span className="text-[10px] text-foreground/40 tracking-wider">PUBLIC_SECTOR_ROLE</span>
-                  <span className="text-foreground font-semibold leading-relaxed">
-                    Civil Servant (ASN)
-                  </span>
-                  <span className="text-[10px] text-cyber-orange">
-                    Ministry of Religious Affairs of the Republic of Indonesia
-                  </span>
-                  <span className="text-[9px] text-foreground/60 leading-tight">
-                    Directorate of Islamic Education
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-2 pb-4 border-b border-card-border/50">
-                  <span className="text-[10px] text-foreground/40 tracking-wider">EDUCATION</span>
-                  <span className="text-foreground font-semibold">
-                    Bachelor of Mathematics Education
-                  </span>
-                  <span className="text-[10px] text-foreground/60">
-                    Lambung Mangkurat University
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <span className="text-[10px] text-foreground/40 tracking-wider">ENGINEERING_STATS</span>
-                  <div className="grid grid-cols-2 gap-2 text-[10px] mt-1">
-                    <div className="bg-black/30 border border-card-border/60 rounded p-2 text-center">
-                      <div className="text-cyber-cyan font-bold">EST. 2021</div>
-                      <div className="text-[8px] text-foreground/40">JOURNEY_START</div>
-                    </div>
-                    <div className="bg-black/30 border border-card-border/60 rounded p-2 text-center">
-                      <div className="text-cyber-green font-bold">8+ TECHS</div>
-                      <div className="text-[8px] text-foreground/40">ACTIVE_STACK</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Sub-Card: System Diagnostics */}
-            <div className="glass-panel rounded-xl border border-card-border p-5 space-y-3 font-mono text-[10px] text-foreground/50">
-              <div className="flex justify-between">
-                <span>SYSTEM_STABILITY:</span>
-                <span className="text-cyber-green font-bold">EXCELLENT</span>
-              </div>
-              <div className="flex justify-between">
-                <span>COMPILER_TARGET:</span>
-                <span className="text-cyber-orange">NEXT_JS_V16</span>
-              </div>
-              <div className="flex justify-between">
-                <span>RENDER_MODE:</span>
-                <span className="text-cyber-cyan">HYBRID_SSR</span>
-              </div>
-            </div>
-          </div>
-
           {/* Right Column: Detailed Narrative Biography */}
-          <div className="lg:col-span-8 space-y-8">
-            <div className="space-y-4">
-              <span className="font-mono text-xs font-bold text-cyber-orange tracking-widest uppercase">{"// 02. PROFILE_NARRATIVE"}</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight font-sans">
-                About Ahmad Fikri Akbar
-              </h2>
-              <div className="h-[2px] w-24 bg-gradient-to-r from-cyber-orange to-transparent" />
-            </div>
-
+          <div className="min-w-0 lg:col-span-8 lg:order-2 space-y-8">
             {/* Biography Blocks */}
             <div className="space-y-6 text-base leading-relaxed text-foreground/80 font-sans">
               <p>
@@ -133,37 +63,102 @@ export default function AboutPage() {
             </div>
 
             {/* Quick Action CTA */}
-            <div className="pt-4 flex flex-wrap gap-4 font-mono text-xs font-bold tracking-widest">
+            <div className="pt-4 flex flex-wrap gap-4 font-mono text-sm font-bold tracking-widest">
               <Link
-                href="/#contact"
+                href="#contact"
                 className="flex h-12 items-center justify-center rounded-md bg-foreground px-6 text-background transition-transform duration-200 hover:-translate-y-1 active:translate-y-0"
               >
-                [GET_IN_TOUCH]
+                Get in touch
               </Link>
               <Link
                 href="/"
                 className="flex h-12 items-center justify-center rounded-md border border-card-border bg-card px-6 text-foreground hover:border-cyber-orange transition-all duration-300"
               >
-                [BACK_TO_HOME]
+                Back to Home
               </Link>
+            </div>
+          </div>
+
+          {/* Left Column: Key Stats / Retro Inspection Card */}
+          <div className="min-w-0 lg:col-span-4 lg:order-1 space-y-6">
+            <div className="glass-panel rounded-xl border border-card-border overflow-hidden glow-orange relative">
+              {/* Scanlines / CRT Top Bar */}
+              <div className="bg-background/60 px-4 py-3 border-b border-card-border flex items-center justify-between font-mono text-xs">
+                <span className="font-bold text-cyber-orange">BIO_METADATA</span>
+                <span className="text-muted">ONLINE</span>
+              </div>
+
+              {/* Profile Telemetry Elements */}
+              <div className="p-6 space-y-6 font-mono text-xs">
+                <div className="flex flex-col gap-2 pb-4 border-b border-card-border/50">
+                  <span className="text-xs text-muted tracking-wider">FULL_NAME</span>
+                  <span className="text-base font-bold text-foreground">Ahmad Fikri Akbar</span>
+                </div>
+
+                <div className="flex flex-col gap-2 pb-4 border-b border-card-border/50">
+                  <span className="text-xs text-muted tracking-wider">PUBLIC_SECTOR_ROLE</span>
+                  <span className="text-foreground font-semibold leading-relaxed">
+                    Civil Servant (ASN)
+                  </span>
+                  <span className="text-xs text-cyber-orange">
+                    Ministry of Religious Affairs of the Republic of Indonesia
+                  </span>
+                  <span className="text-xs text-muted leading-tight">
+                    Directorate of Islamic Education
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-2 pb-4 border-b border-card-border/50">
+                  <span className="text-xs text-muted tracking-wider">EDUCATION</span>
+                  <span className="text-foreground font-semibold">
+                    Bachelor of Mathematics Education
+                  </span>
+                  <span className="text-xs text-muted">
+                    Lambung Mangkurat University
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <span className="text-xs text-muted tracking-wider">ENGINEERING_STATS</span>
+                  <div className="grid grid-cols-2 gap-2 text-xs mt-1">
+                    <div className="bg-background/60 border border-card-border/60 rounded p-2 text-center">
+                      <div className="text-cyber-cyan font-bold">EST. 2021</div>
+                      <div className="text-xs text-muted">JOURNEY_START</div>
+                    </div>
+                    <div className="bg-background/60 border border-card-border/60 rounded p-2 text-center">
+                      <div className="text-cyber-green font-bold">8+ TECHS</div>
+                      <div className="text-xs text-muted">ACTIVE_STACK</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Sub-Card: System Diagnostics */}
+            <div className="glass-panel rounded-xl border border-card-border p-5 space-y-3 font-mono text-xs text-muted">
+              <div className="flex justify-between">
+                <span>SYSTEM_STABILITY:</span>
+                <span className="text-cyber-green font-bold">EXCELLENT</span>
+              </div>
+              <div className="flex justify-between">
+                <span>COMPILER_TARGET:</span>
+                <span className="text-cyber-orange">NEXT_JS_V16</span>
+              </div>
+              <div className="flex justify-between">
+                <span>RENDER_MODE:</span>
+                <span className="text-cyber-cyan">HYBRID_SSR</span>
+              </div>
             </div>
           </div>
 
         </section>
 
+        <section id="contact" aria-labelledby="contact-heading" className="mx-auto w-full max-w-2xl">
+          <ContactForm />
+        </section>
       </main>
 
-      {/* Footer */}
-      <footer className="mt-auto border-t border-card-border bg-card/20 py-8 text-center font-mono text-[10px] text-foreground/60">
-        <div className="mx-auto max-w-7xl px-6 space-y-2">
-          <div>
-            &copy; 2026 Ahmad Fikri Akbar // ALL RIGHTS SHIPPED, COMPREHENDED & DEPLOYED.
-          </div>
-          <div className="text-cyber-orange/80 font-bold">
-            SYSTEM_UPTIME: 100% | ENVIRONMENT: CANARY_REACT_19
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }

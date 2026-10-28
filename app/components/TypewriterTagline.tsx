@@ -1,56 +1,55 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useMotion } from "./MotionProvider";
 
 const words = ["Ship.", "Build.", "Optimize."];
-export default function TypewriterTagline() {
-  const [wordIndex, setWordIndex] = useState(0);
-  const [currentText, setCurrentText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(100);
+
+function AnimatedWord() {
+  const [currentText, setCurrentText] = useState(words[0]);
 
   useEffect(() => {
-    
-
-    const handleType = () => {
-      const fullWord = words[wordIndex];
-
-      if (!isDeleting) {
-        // Typing phase
-        setCurrentText(fullWord.substring(0, currentText.length + 1));
-        setTypingSpeed(100); // Standard speed while typing
-
-        if (currentText === fullWord) {
-          // Pause when full word is finished
-          setIsDeleting(false);
-          setTypingSpeed(2000); // Long pause at the end
-          setIsDeleting(true);
-        }
-      } else {
-        // Backspacing phase
-        setCurrentText(fullWord.substring(0, currentText.length - 1));
-        setTypingSpeed(45); // Faster speed while deleting
-
-        if (currentText === "") {
-          setIsDeleting(false);
-          // Advance to the next word
-          setWordIndex((prev) => (prev + 1) % words.length);
-          setTypingSpeed(300); // Brief pause before typing next word
-        }
+    let wordIndex = 0;
+    let text = words[0];
+    let deleting = true;
+    let timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      const word = words[wordIndex];
+      text = deleting ? text.slice(0, -1) : word.slice(0, text.length + 1);
+      setCurrentText(text);
+      let delay = deleting ? 45 : 100;
+      if (deleting && !text) {
+        wordIndex = (wordIndex + 1) % words.length;
+        deleting = false;
+        delay = 300;
+      } else if (!deleting && text === word) {
+        deleting = true;
+        delay = 2000;
       }
+      timer = setTimeout(tick, delay);
     };
-
-    const timer = setTimeout(handleType, typingSpeed);
+    timer = setTimeout(tick, 2000);
     return () => clearTimeout(timer);
-  }, [currentText, isDeleting, typingSpeed, wordIndex]);
+  }, []);
+
+  return currentText;
+}
+
+export default function TypewriterTagline() {
+  const { animationsEnabled } = useMotion();
 
   return (
-    <h2 className="min-h-[4rem] text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl font-mono leading-none">
-      I Don’t Just Write Code.
-      <span className="mt-2 sm:inline"> I </span>
-      <span className="typewriter-cursor inline-block text-transparent bg-clip-text bg-gradient-to-r from-cyber-orange to-cyber-pink  drop-shadow-[0_0_15px_rgba(255,0,127,0.15)]">
-        {currentText}
+    <h1 className="font-mono text-3xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
+      <span className="sr-only">I don’t just write code. I ship, build, and optimize.</span>
+      <span aria-hidden="true">
+        I Don’t Just Write Code.<br />I{" "}
+        <span className="inline-grid align-bottom">
+          <span className="invisible col-start-1 row-start-1">Optimize.</span>
+          <span className="typewriter-cursor col-start-1 row-start-1 bg-gradient-to-r from-cyber-orange to-cyber-pink bg-clip-text text-transparent">
+            {animationsEnabled ? <AnimatedWord /> : words[0]}
+          </span>
+        </span>
       </span>
-    </h2>
+    </h1>
   );
 }

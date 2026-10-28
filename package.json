@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:ux": "node --experimental-strip-types --test tests/*.test.mjs",
+    "test:ux:smoke": "node tests/public-pages.smoke.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1052.0",

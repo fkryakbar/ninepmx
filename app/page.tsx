@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import AnimatedBackground from "./components/AnimatedBackground";
-import ContactForm from "./components/ContactForm";
+import Image from "next/image";
+import { Suspense } from "react";
+import FeaturedProjects from "./components/FeaturedProjects";
+import ProjectGridSkeleton from "./components/ProjectGridSkeleton";
 import InteractiveTerminal from "./components/InteractiveTerminal";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import TypewriterTagline from "./components/TypewriterTagline";
-import { getLatestProjects } from "@/repositories/project";
 
 export const metadata: Metadata = {
   title: "fkryakbar | A Developer Obsessed With Performance.",
@@ -14,11 +16,7 @@ export const metadata: Metadata = {
     "I build scalable applications, backend systems, and automation tools while continuously exploring better ways to create reliable and efficient software.",
 };
 
-
-
-export default async function Home() {
-  // Fetch latest projects from database
-  const dbProjects = await getLatestProjects(3);
+export default function Home() {
   return (
     <>
       {/* High performance moving grid canvas backdrop */}
@@ -28,7 +26,7 @@ export default async function Home() {
       <Navbar />
 
       {/* Main Container */}
-      <main className="mx-auto flex max-w-7xl flex-col px-6 py-12 md:py-20 lg:py-24 space-y-24 md:space-y-36">
+      <main id="main-content" tabIndex={-1} className="mx-auto flex w-full min-w-0 max-w-7xl flex-col px-6 py-12 md:py-20 lg:py-24 space-y-24 md:space-y-36">
 
         {/* Section 1: Hero */}
         <section id="hero" className="flex flex-col gap-8 md:gap-12 pt-8">
@@ -50,124 +48,67 @@ export default async function Home() {
           </div>
 
           {/* Action CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 font-mono text-xs font-bold tracking-widest">
+          <div className="flex flex-col sm:flex-row gap-4 font-mono text-sm font-bold tracking-widest">
             <a
               href="#projects"
               className="flex h-12 items-center justify-center rounded-md bg-foreground px-6 text-background transition-transform duration-200 hover:-translate-y-1 active:translate-y-0"
             >
-              [LAUNCH_SHOWCASE]
+              View projects
             </a>
-            <a
-              href="#contact"
+            <Link
+              href="/about"
               className="flex h-12 items-center justify-center rounded-md border border-card-border bg-card px-6 text-foreground hover:border-cyber-cyan hover:shadow-[0_0_15px_rgba(0,240,255,0.25)] transition-all duration-300"
             >
-              [ESTABLISH_CONN]
-            </a>
+              About me
+            </Link>
           </div>
         </section>
 
         {/* Bento Stats Banner */}
-        <section className="grid grid-cols-2 gap-4 md:grid-cols-4 font-mono">
+        <section aria-label="Profile highlights" className="grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 md:grid-cols-4 font-mono">
           {[
-            { label: "SHIPPED_APPLICATIONS", val: "45+", desc: "Node & React setups" },
-            { label: "SYSTEMS_PERFORMANCE", val: "100%", desc: "Mobile Optimized" },
-            { label: "LINES_OF_TYPED_CODE", val: "150K", desc: "Pure TypeScript" },
-            { label: "RUNTIME_UPTIME_RATE", val: "99.9%", desc: "Continuous Deploys" },
+            { label: "Applications shipped", val: "45+", desc: "Node & React setups" },
+            { label: "Mobile optimized", val: "100%", desc: "Mobile Optimized" },
+            { label: "Lines of typed code", val: "150K", desc: "Pure TypeScript" },
+            { label: "Runtime uptime", val: "99.9%", desc: "Continuous Deploys" },
           ].map((stat, idx) => (
             <div
               key={idx}
               className="glass-panel flex flex-col gap-2 rounded-lg p-5 border border-card-border"
             >
-              <span className="text-[10px] tracking-wider text-foreground/50">{stat.label}</span>
+              <span className="text-xs tracking-wider text-muted">{stat.label}</span>
               <span className="text-3xl font-extrabold text-cyber-cyan">{stat.val}</span>
-              <span className="text-[10px] text-foreground/60 leading-tight">{stat.desc}</span>
+              <span className="text-xs text-muted leading-tight">{stat.desc}</span>
             </div>
           ))}
         </section>
 
-        {/* Section 2: Projects Showcase (Server-Side Rendered for SEO) */}
-        <section id="projects" className="space-y-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-card-border pb-6">
-            <div>
-              <span className="font-mono text-xs font-bold text-cyber-pink tracking-widest uppercase">{"// 01. SOURCE_CODE_METADATA"}</span>
-              <h3 className="mt-2 text-2xl md:text-3xl font-extrabold tracking-tight">
-                Featured System Operations
-              </h3>
-            </div>
-            <Link
-              href="/projects"
-              className="font-mono text-xs text-foreground/50 hover:text-cyber-cyan transition"
-            >
-              VIEW_ALL →
+        <section id="projects" aria-labelledby="projects-heading" className="space-y-8">
+          <div className="border-b border-card-border pb-6">
+            <span className="font-mono text-xs font-bold text-cyber-pink tracking-widest uppercase">{"// 01. SOURCE_CODE_METADATA"}</span>
+            <h2 id="projects-heading" className="mt-2 text-2xl font-extrabold tracking-tight md:text-3xl">Featured projects</h2>
+          </div>
+          <Suspense fallback={<ProjectGridSkeleton />}>
+            <FeaturedProjects />
+          </Suspense>
+          <div className="flex justify-center pt-2">
+            <Link href="/projects" className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-md border border-cyber-cyan/40 bg-card px-6 font-mono text-sm font-semibold text-cyber-cyan transition hover:border-cyber-cyan sm:w-auto">
+              View all projects <span aria-hidden="true">→</span>
             </Link>
           </div>
-
-          {dbProjects.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-3">
-              {dbProjects.map((proj, idx) => {
-                const glowClasses = ["glow-cyan", "glow-pink", "glow-green"];
-                return (
-                  <Link
-                    key={proj.id}
-                    href={`/projects/${proj.slug}`}
-                    className={`glass-panel group relative flex flex-col justify-between overflow-hidden rounded-xl ${glowClasses[idx % 3]}`}
-                  >
-                    {proj.thumbnail && (
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img
-                        src={proj.thumbnail}
-                        alt={proj.projectName}
-                        className="h-44 w-full object-cover border-b border-card-border/60"
-                      />
-                    )}
-                    <div className="p-5 space-y-3">
-                      <div className="flex items-center justify-between font-mono text-[10px]">
-                        <span
-                          className={`rounded-full px-2.5 py-0.5 font-bold tracking-wider ${proj.type === "open_source"
-                            ? "bg-cyber-green/10 text-cyber-green border border-cyber-green/20"
-                            : "bg-cyber-pink/10 text-cyber-pink border border-cyber-pink/20"
-                            }`}
-                        >
-                          {proj.type === "open_source" ? "OPEN_SRC" : "CLOSED_SRC"}
-                        </span>
-                        <span className="text-foreground/40">
-                          {new Date(proj.createdAt).toLocaleDateString("en-US", {
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </span>
-                      </div>
-                      <h4 className="text-lg font-bold group-hover:text-cyber-cyan transition duration-300">
-                        {proj.projectName}
-                      </h4>
-                      <div className="pt-2 border-t border-card-border/60">
-                        <span className="font-mono text-[10px] text-foreground/40 group-hover:text-cyber-cyan/60 transition">
-                          VIEW_PROJECT →
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="text-center py-12 border border-dashed border-card-border rounded-xl bg-card/20">
-              <p className="font-mono text-sm text-foreground/40">{"// SYSTEM_OFFLINE: No projects currently found in database."}</p>
-            </div>
-          )}
         </section>
 
         {/* Section 3: Interactive Skills Terminal */}
         <section id="skills" className="grid gap-12 lg:grid-cols-5 items-center">
           <div className="lg:col-span-2 space-y-6">
             <span className="font-mono text-xs font-bold text-cyber-green tracking-widest uppercase">{"// MY CORE TECHNOLOGY STACK"}</span>
-            <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight font-sans">
+            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight font-sans">
               My Core Technology Stack
-            </h3>
-            <p className="text-sm leading-relaxed text-foreground/75 font-sans">
+            </h2>
+            <p className="text-base leading-relaxed text-foreground/80 font-sans">
               I enjoy learning and working with a variety of modern, robust technologies. My stack centers around Next.js, React, Go, TypeScript, Tailwind, Laravel, Node.js, and Docker tools that help me build stable, performant applications while continually growing as an engineer.
             </p>
-            <div className="rounded-lg border border-card-border bg-card/40 p-4 font-mono text-[10px] text-foreground/60 space-y-1">
+            <div className="rounded-lg border border-card-border bg-card/40 p-4 font-mono text-xs text-muted space-y-1">
               <div>$ systeminfo | grep active_stack</div>
               <div>- FRONTEND : Next.js, React, TypeScript, Tailwind</div>
               <div>- BACKEND  : Go, Laravel, Node.js</div>
@@ -175,7 +116,7 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="min-w-0 lg:col-span-3">
             <InteractiveTerminal />
           </div>
         </section>
@@ -184,10 +125,10 @@ export default async function Home() {
         <section id="partners" className="space-y-12">
           <div className="border-b border-card-border pb-6">
             <span className="font-mono text-xs font-bold text-cyber-amber tracking-widest uppercase">{"// 02. ALLIED_NEURAL_NETWORKS"}</span>
-            <h3 className="mt-2 text-2xl md:text-3xl font-extrabold tracking-tight">
+            <h2 className="mt-2 text-2xl md:text-3xl font-extrabold tracking-tight">
               Partner In Crime
-            </h3>
-            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-foreground/75 font-sans">
+            </h2>
+            <p className="mt-3 max-w-3xl text-base leading-relaxed text-foreground/80 font-sans">
               Yes, I build with AI agents, the most elite fleet of digital co-pilots on the planet.
               But don&apos;t get it twisted: every single line they generate passes through <span className="text-cyber-cyan font-semibold">my{" "}</span>review.
               I read it, I understand it, I refactor it if it&apos;s ugly. These agents accelerate my workflow;
@@ -258,12 +199,13 @@ export default async function Home() {
             ].map((agent) => (
               <div
                 key={agent.name}
-                className={`glass-panel group relative flex w-full sm:w-[calc(33.333%-14px)] lg:w-[calc(25%-15px)] flex-col items-center gap-4 rounded-xl p-6 ${agent.glow}`}
+                className={`glass-panel group relative flex min-w-0 w-full sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)] flex-col items-center gap-4 rounded-xl p-6 ${agent.glow}`}
               >
                 {/* Logo with light background for dark logos */}
                 <div className="relative flex h-16 w-16 items-center justify-center rounded-xl p-2 border border-card-border transition-transform duration-300 group-hover:scale-110 ai-logo-container">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
+                    width={48}
+                    height={48}
                     src={agent.logo}
                     alt={agent.name}
                     className={`h-full w-full object-contain ${agent.contrast ? "ai-logo-contrast" : ""}`}
@@ -271,16 +213,16 @@ export default async function Home() {
                 </div>
 
                 {/* Agent name */}
-                <h4 className={`font-mono text-sm font-bold tracking-wider ${agent.accent} transition-colors`}>
+                <h3 className={`font-mono text-sm font-bold tracking-wider ${agent.accent} transition-colors`}>
                   {agent.name.toUpperCase()}
-                </h4>
+                </h3>
 
                 {/* Model tags */}
                 <div className="flex flex-wrap justify-center gap-1.5">
                   {agent.models.map((model) => (
                     <span
                       key={model}
-                      className={`rounded-full border ${agent.border} bg-card/60 px-2 py-0.5 font-mono text-[9px] tracking-wider text-foreground/50`}
+                      className={`max-w-full rounded-full border ${agent.border} bg-card/60 px-2 py-0.5 font-mono text-xs leading-relaxed break-all text-center text-muted`}
                     >
                       {model}
                     </span>
@@ -291,14 +233,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Section 5: Contact / Establishment */}
-        <section id="contact" className="mx-auto w-full max-w-2xl space-y-6">
-          <div className="text-center">
-            <span className="font-mono text-xs font-bold text-cyber-orange tracking-widest uppercase">{"// 03. UPLINK_TUNNEL"}</span>
-          </div>
-
-          <ContactForm />
-        </section>
       </main>
 
       {/* Footer */}

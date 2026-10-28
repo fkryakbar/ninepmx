@@ -4,6 +4,7 @@
   /* Default Theme: Dark Mode (Retro Cyberpunk) */
   --background: #06060c;
   --foreground: #f0f0f6;
+  --muted: #b3b3c2;
   --card: rgba(12, 12, 24, 0.55);
   --card-border: rgba(255, 255, 255, 0.08);
   --cyber-cyan: #00f0ff;
@@ -27,13 +28,14 @@
 :root.light {
   --background: #f7f5ed;
   --foreground: #181824;
+  --muted: #575562;
   --card: rgba(255, 255, 255, 0.7);
   --card-border: rgba(24, 24, 36, 0.12);
-  --cyber-cyan: #007788;
-  --cyber-pink: #d00060;
-  --cyber-orange: #c2410c;
-  --cyber-green: #1a6f2e;
-  --cyber-amber: #d97706;
+  --cyber-cyan: #005f6e;
+  --cyber-pink: #bf0058;
+  --cyber-orange: #9a3308;
+  --cyber-green: #155a25;
+  --cyber-amber: #9a4800;
   --crt-line: rgba(0, 0, 0, 0.015);
   --grid-line: rgba(0, 119, 136, 0.035);
   
@@ -49,6 +51,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
   --color-card: var(--card);
   --color-card-border: var(--card-border);
   --color-cyber-cyan: var(--cyber-cyan);
@@ -77,8 +80,51 @@ body {
   background-color: transparent;
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui;
-  overflow-x: hidden;
   transition: color 0.4s ease;
+}
+
+/* Keep fragment destinations clear of the sticky navigation. */
+main [id], main[id] {
+  scroll-margin-top: 6rem;
+}
+
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--cyber-cyan);
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 1rem;
+  z-index: 100;
+  transform: translateY(-200%);
+  border: 2px solid var(--cyber-cyan);
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Start static during SSR and keep manual pause consistent across routes. */
+:root:not([data-motion="on"]) *,
+:root:not([data-motion="on"]) *::before,
+:root:not([data-motion="on"]) *::after {
+  animation-play-state: paused !important;
+  transition-duration: 0s !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Glassmorphism optimized for performance */
@@ -266,10 +312,10 @@ body {
    Public Content Rendering (project detail)
    ======================================== */
 .tiptap-content {
+  overflow-wrap: anywhere;
   font-size: 1rem;
   line-height: 1.85;
   color: var(--foreground);
-  opacity: 0.9;
 }
 
 .tiptap-content h1 {

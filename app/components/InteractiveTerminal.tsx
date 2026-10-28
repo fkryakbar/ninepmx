@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useMotion } from "./MotionProvider";
 
 interface TerminalLine {
   text: string;
@@ -8,6 +9,7 @@ interface TerminalLine {
 }
 
 export default function InteractiveTerminal() {
+  const { animationsEnabled } = useMotion();
   const [history, setHistory] = useState<TerminalLine[]>([
     { text: "NINEPMX Portfolio OS v1.6.2 (type 'help' for commands)", type: "system" },
     { text: "System diagnostic: SECURE | LOAD: NORMAL | STATUS: OPERATIONAL", type: "system" },
@@ -100,7 +102,7 @@ export default function InteractiveTerminal() {
     setHistory(newHistory);
   };
 
-  const handlePreset = (presetName: string, command: string) => {
+  const handlePreset = (command: string) => {
     handleCommand(command);
   };
 
@@ -115,55 +117,54 @@ export default function InteractiveTerminal() {
     if (consoleRef.current) {
       consoleRef.current.scrollTo({
         top: consoleRef.current.scrollHeight,
-        behavior: "smooth",
+        behavior: animationsEnabled ? "smooth" : "auto",
       });
     }
-  }, [history]);
+  }, [history, animationsEnabled]);
 
   return (
     <div className="glass-panel w-full overflow-hidden rounded-xl border border-card-border shadow-2xl">
       {/* Terminal Title Bar */}
       <div className="flex items-center justify-between bg-terminal-header px-4 py-3 border-b border-terminal-border">
-        <div className="flex items-center gap-2">
+        <div aria-hidden="true" className="flex shrink-0 items-center gap-2">
           <div className="h-3 w-3 rounded-full bg-cyber-pink/80" />
           <div className="h-3 w-3 rounded-full bg-cyber-amber/80" />
           <div className="h-3 w-3 rounded-full bg-cyber-green/80" />
         </div>
-        <span className="font-mono text-xs font-semibold tracking-wider text-foreground/60 select-none">
+        <span className="min-w-0 truncate px-3 font-mono text-xs font-semibold text-muted select-none">
           fkryakbar@portfolio-terminal:~
         </span>
-        <div className="w-12" /> {/* spacer */}
       </div>
 
       {/* Preset Quick Buttons */}
       <div className="flex flex-wrap gap-2 bg-terminal-presets p-3 border-b border-terminal-border">
         <button
-          onClick={() => handlePreset("frontend", "npm run dev:frontend")}
-          className="rounded border border-cyber-cyan/30 hover:border-cyber-cyan/70 bg-cyber-cyan/5 hover:bg-cyber-cyan/20 px-2 py-1 font-mono text-[10px] text-cyber-cyan transition duration-200"
+          onClick={() => handlePreset("npm run dev:frontend")}
+          className="min-h-11 rounded border border-cyber-cyan/30 hover:border-cyber-cyan/70 bg-cyber-cyan/5 hover:bg-cyber-cyan/20 px-2 py-1 font-mono text-xs text-cyber-cyan transition duration-200"
         >
           $ run:frontend
         </button>
         <button
-          onClick={() => handlePreset("backend", "npm run dev:backend")}
-          className="rounded border border-cyber-orange/30 hover:border-cyber-orange/70 bg-cyber-orange/5 hover:bg-cyber-orange/20 px-2 py-1 font-mono text-[10px] text-cyber-orange transition duration-200"
+          onClick={() => handlePreset("npm run dev:backend")}
+          className="min-h-11 rounded border border-cyber-orange/30 hover:border-cyber-orange/70 bg-cyber-orange/5 hover:bg-cyber-orange/20 px-2 py-1 font-mono text-xs text-cyber-orange transition duration-200"
         >
           $ run:backend
         </button>
         <button
-          onClick={() => handlePreset("devops", "npm run dev:devops")}
-          className="rounded border border-cyber-green/30 hover:border-cyber-green/70 bg-cyber-green/5 hover:bg-cyber-green/20 px-2 py-1 font-mono text-[10px] text-cyber-green transition duration-200"
+          onClick={() => handlePreset("npm run dev:devops")}
+          className="min-h-11 rounded border border-cyber-green/30 hover:border-cyber-green/70 bg-cyber-green/5 hover:bg-cyber-green/20 px-2 py-1 font-mono text-xs text-cyber-green transition duration-200"
         >
           $ run:devops
         </button>
         <button
-          onClick={() => handlePreset("tools", "npm run dev:tools")}
-          className="rounded border border-cyber-amber/30 hover:border-cyber-amber/70 bg-cyber-amber/5 hover:bg-cyber-amber/20 px-2 py-1 font-mono text-[10px] text-cyber-amber transition duration-200"
+          onClick={() => handlePreset("npm run dev:tools")}
+          className="min-h-11 rounded border border-cyber-amber/30 hover:border-cyber-amber/70 bg-cyber-amber/5 hover:bg-cyber-amber/20 px-2 py-1 font-mono text-xs text-cyber-amber transition duration-200"
         >
           $ run:tools
         </button>
         <button
-          onClick={() => handlePreset("neofetch", "neofetch")}
-          className="rounded border border-foreground/30 hover:border-foreground/60 bg-foreground/5 hover:bg-foreground/10 px-2 py-1 font-mono text-[10px] text-foreground/80 transition duration-200"
+          onClick={() => handlePreset("neofetch")}
+          className="min-h-11 rounded border border-foreground/30 hover:border-foreground/60 bg-foreground/5 hover:bg-foreground/10 px-2 py-1 font-mono text-xs text-foreground/80 transition duration-200"
         >
           $ neofetch
         </button>
@@ -172,6 +173,10 @@ export default function InteractiveTerminal() {
       {/* Terminal Screen Console */}
       <div
         ref={consoleRef}
+        role="log"
+        aria-label="Terminal output"
+        aria-live="polite"
+        aria-relevant="additions"
         className="h-[280px] overflow-y-auto bg-terminal-bg p-4 font-mono text-xs leading-relaxed text-terminal-text"
       >
         <div className="space-y-1.5">
@@ -183,7 +188,7 @@ export default function InteractiveTerminal() {
             if (line.type === "output") colorClass = "text-cyber-green";
 
             return (
-              <div key={idx} className={`${colorClass} whitespace-pre-wrap`}>
+              <div key={idx} className={`${colorClass} whitespace-pre-wrap [overflow-wrap:anywhere]`}>
                 {line.text}
               </div>
             );
@@ -201,14 +206,14 @@ export default function InteractiveTerminal() {
           value={inputVal}
           onChange={(e) => setInputVal(e.target.value)}
           placeholder="Enter command (e.g. help, skills, about, neofetch, clear)..."
-          className="flex-1 bg-transparent px-2.5 py-3 font-mono text-xs text-terminal-text outline-none placeholder:text-terminal-text/40"
+          className="min-h-11 min-w-0 flex-1 bg-transparent px-2.5 py-3 font-mono text-base text-terminal-text placeholder:text-muted sm:text-sm"
           aria-label="Terminal command prompt"
         />
         <button
           type="submit"
           className="bg-terminal-presets hover:bg-cyber-cyan/15 px-4 font-mono text-xs text-cyber-cyan border-l border-terminal-border transition duration-200"
         >
-          EXECUTE
+          Run
         </button>
       </form>
     </div>

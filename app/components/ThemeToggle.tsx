@@ -14,7 +14,7 @@ export default function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="h-10 w-32 rounded border border-card-border bg-card opacity-50 animate-pulse" />
+      <div aria-hidden="true" className="h-11 w-32 rounded border border-card-border bg-card" />
     );
   }
 
@@ -23,8 +23,9 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
-      className="group relative flex items-center justify-between gap-3 overflow-hidden rounded-md border border-card-border bg-card px-4 py-2 text-xs font-mono tracking-wider transition-all duration-300 hover:border-cyber-cyan hover:shadow-[0_0_10px_rgba(0,240,255,0.25)] active:scale-95"
-      aria-label="Toggle system theme"
+      type="button"
+      className="group relative flex min-h-11 items-center justify-between gap-2 overflow-hidden rounded-md border border-card-border bg-card px-3 py-2 text-xs font-mono transition-all duration-300 hover:border-cyber-cyan active:scale-95"
+      aria-label={`Switch to ${currentTheme === "dark" ? "light" : "dark"} mode`}
     >
       {/* Laser scan animation overlay on hover */}
       <span className="absolute inset-0 -translate-y-full bg-gradient-to-b from-transparent via-cyber-cyan/10 to-transparent transition-transform duration-1000 group-hover:translate-y-full" />
@@ -38,11 +39,12 @@ export default function ThemeToggle() {
       </span>
 
       <span className="select-none font-bold uppercase text-foreground">
-        SYS_MODE: <span className={currentTheme === "dark" ? "text-cyber-cyan" : "text-cyber-pink"}>{currentTheme}</span>
+        <span className={currentTheme === "dark" ? "text-cyber-cyan" : "text-cyber-pink"}>{currentTheme}</span> mode
       </span>
 
       {/* Retro Mini Icon */}
       <svg
+        aria-hidden="true"
         className={`h-3.5 w-3.5 transition-transform duration-500 ${currentTheme === "dark" ? "rotate-0 text-cyber-cyan" : "rotate-180 text-cyber-pink"
           }`}
         fill="none"

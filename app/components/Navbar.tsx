@@ -2,80 +2,105 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { MotionToggle } from "./MotionProvider";
 import ThemeToggle from "./ThemeToggle";
+
+const links = [
+  { href: "/", label: "Home", accent: "text-cyber-cyan" },
+  { href: "/about", label: "About", accent: "text-cyber-orange" },
+  { href: "/projects", label: "Projects", accent: "text-cyber-pink" },
+  { href: "/#skills", label: "Skills", accent: "text-cyber-green" },
+  { href: "/about#contact", label: "Contact", accent: "text-cyber-amber" },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
-  // Helper to determine active link
-  const isActive = (path: string) => pathname === path || (path === '/projects' && pathname?.startsWith('/projects'));
+  useEffect(() => {
+    if (!isOpen) return;
+    const closeOutside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !headerRef.current?.contains(event.target)) setIsOpen(false);
+    };
+    const media = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = () => { if (media.matches) setIsOpen(false); };
+    document.addEventListener("pointerdown", closeOutside);
+    media.addEventListener("change", closeOnDesktop);
+    return () => {
+      document.removeEventListener("pointerdown", closeOutside);
+      media.removeEventListener("change", closeOnDesktop);
+    };
+  }, [isOpen]);
+
+  function navigation(mobile: boolean) {
+    return links.map(link => {
+      const active = !link.href.includes("#") && (pathname === link.href || (link.href === "/projects" && pathname.startsWith("/projects/")));
+      return (
+        <Link
+          key={link.href}
+          href={link.href}
+          aria-current={active ? "page" : undefined}
+          onClick={() => setIsOpen(false)}
+          className={`flex min-h-11 items-center border-b-2 ${mobile ? "w-fit" : "shrink-0"} ${active ? `${link.accent} border-current font-bold` : "border-transparent text-foreground/80 hover:text-foreground hover:border-current"}`}
+        >
+          <span aria-hidden="true">{"//"}</span>{link.label}
+        </Link>
+      );
+    });
+  }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-card-border bg-background/60 backdrop-blur-md transition-colors duration-300">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        {/* Brand */}
-        <div className="flex items-center gap-2">
-          <span className={`h-2.5 w-2.5 animate-pulse rounded-full ${isActive("/about") ? "bg-cyber-orange" : isActive("/projects") ? "bg-cyber-pink" : "bg-cyber-cyan"}`} />
-          <Link
-            href="/"
-            className={`font-mono text-base font-bold tracking-wider transition duration-200 ${isActive("/about") ? "text-cyber-orange hover:text-cyber-orange/80" : isActive("/projects") ? "text-cyber-pink hover:text-cyber-pink/80" : "text-foreground hover:text-cyber-cyan"}`}
-          >
+    <>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
+      <header
+        ref={headerRef}
+        className="sticky top-0 z-40 w-full border-b border-card-border bg-background/95 backdrop-blur-md"
+        onKeyDown={event => {
+          if (event.key === "Escape" && isOpen) {
+            setIsOpen(false);
+            toggleRef.current?.focus();
+          }
+        }}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3">
+          <Link href="/" onClick={() => setIsOpen(false)} className="flex min-h-11 shrink-0 items-center gap-2 font-mono text-base font-bold tracking-wider">
+            <span aria-hidden="true" className="h-2.5 w-2.5 animate-pulse rounded-full bg-cyber-cyan" />
             {"//FKRYAKBAR"}
           </Link>
-        </div>
-
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8 font-mono text-xs font-semibold tracking-widest text-foreground/80">
-          <Link href="/" className={pathname === "/" ? "text-cyber-cyan font-bold tracking-wider" : "hover:text-cyber-cyan transition"}>{"//HOME"}</Link>
-          <Link href="/about" className={isActive("/about") ? "text-cyber-orange font-bold tracking-wider" : "hover:text-cyber-orange transition"}>{"//ABOUT"}</Link>
-          <Link href="/projects" className={isActive("/projects") ? "text-cyber-pink font-bold tracking-wider" : "hover:text-cyber-pink transition"}>{"//PROJECTS"}</Link>
-          <Link href="/#skills" className="hover:text-cyber-green transition">{"//SKILLS"}</Link>
-          <Link href="/#contact" className="hover:text-cyber-amber transition">{"//CONTACT"}</Link>
-        </nav>
-
-        {/* Right side Actions */}
-        <div className="flex items-center gap-4">
-          <div className="hidden md:block">
+          <nav aria-label="Main navigation" className="hidden items-center gap-4 font-mono text-xs lg:flex">
+            {navigation(false)}
+          </nav>
+          <div className="hidden items-center gap-2 lg:flex">
             <ThemeToggle />
+            <MotionToggle />
           </div>
-          
-          {/* Mobile Menu Toggle Button */}
-          <button 
-            className="md:hidden flex items-center justify-center p-2 text-foreground/80 hover:text-foreground transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle mobile menu"
+          <button
+            ref={toggleRef}
+            type="button"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-card-border text-foreground lg:hidden"
+            onClick={() => setIsOpen(value => !value)}
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-navigation"
           >
-            {isOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
+            <svg aria-hidden="true" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+            </svg>
           </button>
         </div>
-      </div>
-
-      {/* Mobile Nav Dropdown */}
-      {isOpen && (
-        <div className="md:hidden border-t border-card-border bg-background/95 backdrop-blur-md px-6 py-4 animate-in slide-in-from-top-2 duration-200">
-          <nav className="flex flex-col gap-4 font-mono text-sm font-semibold tracking-widest text-foreground/80">
-            <Link href="/" className={pathname === "/" ? "text-cyber-cyan" : "hover:text-cyber-cyan transition"} onClick={() => setIsOpen(false)}>{"//HOME"}</Link>
-            <Link href="/about" className={isActive("/about") ? "text-cyber-orange" : "hover:text-cyber-orange transition"} onClick={() => setIsOpen(false)}>{"//ABOUT"}</Link>
-            <Link href="/projects" className={isActive("/projects") ? "text-cyber-pink" : "hover:text-cyber-pink transition"} onClick={() => setIsOpen(false)}>{"//PROJECTS"}</Link>
-            <Link href="/#skills" className="hover:text-cyber-green transition" onClick={() => setIsOpen(false)}>{"//SKILLS"}</Link>
-            <Link href="/#contact" className="hover:text-cyber-amber transition" onClick={() => setIsOpen(false)}>{"//CONTACT"}</Link>
-            
-            <div className="pt-4 mt-2 border-t border-card-border/50 flex justify-start">
-              <ThemeToggle />
-            </div>
+        <div id="mobile-navigation" hidden={!isOpen} className="max-h-[calc(100dvh-70px)] overflow-y-auto border-t border-card-border bg-background px-6 py-4 lg:hidden">
+          <nav aria-label="Mobile navigation" className="flex flex-col gap-2 font-mono text-sm">
+            {navigation(true)}
           </nav>
+          <div className="mt-4 flex flex-wrap gap-3 border-t border-card-border pt-4">
+            <ThemeToggle />
+            <MotionToggle />
+          </div>
         </div>
-      )}
-    </header>
+      </header>
+    </>
   );
 }

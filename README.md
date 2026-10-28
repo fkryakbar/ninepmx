@@ -20,6 +20,18 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## UX verification
+
+Use Node.js 22.6 or newer for the helper tests:
+
+```bash
+npm run lint
+npm run test:ux
+npm run build
+```
+
+With `npm start` running in another terminal, run `npm run test:ux:smoke` to check the public pages, pagination recovery, project return links, contact placement, 404 recovery, and image delivery. The default target is `http://127.0.0.1:3000`; set `UX_BASE_URL` to use another local port. These checks do not modify project data. Browser checks are still needed for keyboard behavior, responsive layouts, and reduced motion.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
